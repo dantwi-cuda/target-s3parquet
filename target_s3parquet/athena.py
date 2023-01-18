@@ -32,17 +32,17 @@ def create_session(config, logger: Logger):
     aws_region = config.get("aws_region") or os.environ.get("AWS_REGION")
     #s3_staging_dir = config.get("s3_staging_dir") or os.environ.get("S3_STAGING_DIR")
     logger.info(f"Using AWS region {aws_region}")
-    session =""
-    
+    aws_session =""
+
     # AWS credentials based authentication
     if aws_access_key_id and aws_secret_access_key:
-        session = session(
+        aws_session = boto3.Session(
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
             region_name=aws_region
         )
     elif aws_access_key_id and aws_secret_access_key and aws_session_token:
-        session = session(
+        aws_session = boto3.Session(
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
             aws_session_token=aws_session_token,
@@ -50,12 +50,12 @@ def create_session(config, logger: Logger):
         )
     # AWS Profile based authentication
     else:
-        session = session(
+        aws_ession = boto3.Session(
             profile_name=aws_profile,
             region_name=aws_region
         )
-    logger.info(session)    
-    return session
+    logger.info(aws_session)    
+    return aws_session
 
 
 def create_database(
