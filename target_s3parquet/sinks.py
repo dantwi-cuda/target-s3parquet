@@ -38,7 +38,7 @@ class s3parquetSink(BatchSink):
         key_properties: Optional[List[str]],
     ) -> None:
         super().__init__(target, stream_name, schema, key_properties)
-        self._athena_session = None
+        self._athena_session = ""
         self._glue_schema = self._get_glue_schema()
         #ddl = generate_create_database_ddl(self.config["athena_database"])
         create_database(self.config["athena_database"]);
