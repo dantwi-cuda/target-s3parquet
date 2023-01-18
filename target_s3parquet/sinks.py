@@ -57,14 +57,14 @@ class s3parquetSink(BatchSink):
     
     
     def _get_glue_schema(self):
-        aws_session=self.athena_session()
+        aws_session=create_session(self.config, self.logger)
         catalog_params = {
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
         }
 
-        if wr.catalog.does_table_exist(**catalog_params,boto3_session=session):
-            return wr.catalog.table(**catalog_params,boto3_session=session)
+        if wr.catalog.does_table_exist(**catalog_params):
+            return wr.catalog.table(**catalog_params)
         else:
             return DataFrame()
 
@@ -181,7 +181,7 @@ class s3parquetSink(BatchSink):
             database=self.config.get("athena_database",""),
             stream=self.stream_name,
         )
-        aws_session=self.athena_session()
+        aws_session=create_session(self.config, self.logger)
         wr.s3.to_parquet(
             df=df,
             index=False,
