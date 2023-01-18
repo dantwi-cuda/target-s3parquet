@@ -1,10 +1,12 @@
 """Tests standard target features using the built-in SDK tests library."""
 
-from typing import Any, Dict
+import datetime
+
+from typing import Dict, Any
 
 from singer_sdk.testing import get_standard_target_tests
 
-from target_s3_parquet.target import TargetS3Parquet
+from target_s3parquet.target import Targets3parquet
 
 SAMPLE_CONFIG: Dict[str, Any] = {
     # TODO: Initialize minimal target config
@@ -15,7 +17,7 @@ SAMPLE_CONFIG: Dict[str, Any] = {
 def test_standard_target_tests():
     """Run standard target tests from the SDK."""
     tests = get_standard_target_tests(
-        TargetS3Parquet,
+        Targets3parquet,
         config=SAMPLE_CONFIG,
     )
     for test in tests:

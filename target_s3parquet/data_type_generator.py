@@ -1,4 +1,4 @@
-from target_s3_parquet.sanitizer import get_valid_types, type_from_anyof
+from target_s3parquet.sanitizer import get_valid_types, type_from_anyof
 
 
 def build_struct_type(attributes, level):
@@ -23,6 +23,21 @@ def coerce_types(name, type):
         return "int"
 
     return type
+
+
+def generate_create_database_ddl(
+    database: str="default"
+)-> None:
+    return f"CREATE DATABASE IF NOT EXISTS {database};"
+
+def execute_sql(sql, athena_client):
+    """Run sql expression using athena client
+
+    Args:
+        sql (string): a valid sql statement string
+        athena_client ([type]): [description]
+    """
+    athena_client.execute(sql)
 
 
 def generate_current_target_schema(schema):
