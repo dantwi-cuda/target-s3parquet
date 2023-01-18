@@ -40,8 +40,8 @@ class s3parquetSink(BatchSink):
         super().__init__(target, stream_name, schema, key_properties)
         self._athena_session = ""
         self._glue_schema = self._get_glue_schema()
-        create_session(self.config, self.logger)
         #ddl = generate_create_database_ddl(self.config["athena_database"])
+        self.logger.warn(f"About to Create Database if it does not exist")
         create_database(self.config["athena_database"]);
         #athena.execute_sql(ddl, self.athena_client)
  
@@ -58,7 +58,8 @@ class s3parquetSink(BatchSink):
     
     
     def _get_glue_schema(self):
-        
+        aws_session=create_session(self.config, self.logger)
+        self.logger.warn(f"I am inside glue schema")
         catalog_params = {
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
@@ -119,7 +120,7 @@ class s3parquetSink(BatchSink):
         # client.upload(context["file_path"])  # Upload file
         # Path(context["file_path"]).unlink()  # Delete local copy
 
-        df = DataFrame(context["records"])
+        df = df.DataFrame(context["records"])
         Partition_Cols=[]
         df["_sdc_started_at"] = STARTED_AT.timestamp()
         validate_partions= self.validateJSON(self.config.get("partition_info"))
@@ -183,6 +184,7 @@ class s3parquetSink(BatchSink):
             stream=self.stream_name,
         )
         aws_session=create_session(self.config, self.logger)
+        self.logger.warn(f"Calling To Parquet Function. Let's See if it's tricky")
         wr.s3.to_parquet(
             df=df,
             index=False,
