@@ -181,7 +181,7 @@ class s3parquetSink(BatchSink):
             database=self.config.get("athena_database",""),
             stream=self.stream_name,
         )
-        session=self.athena_session()
+        aws_session=self.athena_session()
         wr.s3.to_parquet(
             df=df,
             index=False,
