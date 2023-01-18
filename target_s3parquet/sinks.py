@@ -1,7 +1,7 @@
 """s3parquet target sink class, which handles writing streams."""
 from typing import Dict, List, Optional
 import awswrangler as wr
-from pandas import DataFrame
+import pandas as pd
 from singer_sdk import PluginBase
 from singer_sdk.sinks import BatchSink
 import json
@@ -40,6 +40,7 @@ class s3parquetSink(BatchSink):
         super().__init__(target, stream_name, schema, key_properties)
         self._athena_session = ""
         self._glue_schema = self._get_glue_schema()
+        create_session(self.config, self.logger)
         #ddl = generate_create_database_ddl(self.config["athena_database"])
         create_database(self.config["athena_database"]);
         #athena.execute_sql(ddl, self.athena_client)
@@ -57,7 +58,7 @@ class s3parquetSink(BatchSink):
     
     
     def _get_glue_schema(self):
-        aws_session=create_session(self.config, self.logger)
+        
         catalog_params = {
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
@@ -66,7 +67,7 @@ class s3parquetSink(BatchSink):
         if wr.catalog.does_table_exist(**catalog_params):
             return wr.catalog.table(**catalog_params)
         else:
-            return DataFrame()
+            return pd.DataFrame()
 
 
     max_size = 10000  # Max records to write in one batch

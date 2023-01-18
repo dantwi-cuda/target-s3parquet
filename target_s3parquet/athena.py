@@ -60,7 +60,7 @@ def create_session(config, logger: Logger):
 
 def create_database(
     database: str="default"):
-    if "awswrangler_test" not in wr.catalog.databases().values:
+    if database not in wr.catalog.databases().values:
         wr.catalog.create_database(database)
 
 
