@@ -57,7 +57,7 @@ class s3parquetSink(BatchSink):
     
     
     def _get_glue_schema(self):
-        session=self.athena_session()
+        aws_session=self.athena_session()
         catalog_params = {
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
