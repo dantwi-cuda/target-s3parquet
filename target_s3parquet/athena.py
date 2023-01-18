@@ -32,8 +32,8 @@ def create_session(config, logger: Logger):
     aws_region = config.get("aws_region") or os.environ.get("AWS_REGION")
     #s3_staging_dir = config.get("s3_staging_dir") or os.environ.get("S3_STAGING_DIR")
     logger.info(f"Using AWS region {aws_region}")
-    session =None
-
+    session =""
+    
     # AWS credentials based authentication
     if aws_access_key_id and aws_secret_access_key:
         session = session(
@@ -54,7 +54,7 @@ def create_session(config, logger: Logger):
             profile_name=aws_profile,
             region_name=aws_region
         )
-    logger.info(f"BOTO3 Session Created")    
+    logger.info(session)    
     return session
 
 
