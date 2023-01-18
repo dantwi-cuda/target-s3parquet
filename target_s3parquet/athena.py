@@ -54,6 +54,7 @@ def create_session(config, logger: Logger):
             profile_name=aws_profile,
             region_name=aws_region
         )
+    logger.info(f"BOTO3 Session Created")    
     return session
 
 
@@ -62,15 +63,4 @@ def create_database(
     if "awswrangler_test" not in wr.catalog.databases().values:
         wr.catalog.create_database(database)
 
-
-
-
-def execute_sql(sql, athena_client):
-    """Run sql expression using athena client
-
-    Args:
-        sql (string): a valid sql statement string
-        athena_client ([type]): [description]
-    """
-    athena_client.execute(sql)
 
