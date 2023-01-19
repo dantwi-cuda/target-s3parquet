@@ -119,7 +119,8 @@ class s3parquetSink(BatchSink):
         # ------
         # client.upload(context["file_path"])  # Upload file
         # Path(context["file_path"]).unlink()  # Delete local copy
-
+        draningRecords=context["records"]
+        self.logger.info(draningRecords)
         df = DataFrame(context["records"])
         Partition_Cols=[]
         df["_sdc_started_at"] = STARTED_AT.timestamp()
