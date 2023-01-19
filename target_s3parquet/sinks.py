@@ -65,7 +65,7 @@ class s3parquetSink(BatchSink):
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
         }
-        create_database(self.config["athena_database"]);
+        create_database(aws_session=aws_session,database=self.config["athena_database"]);
         if wr.catalog.does_table_exist(**catalog_params,boto3_session=aws_session):
             return wr.catalog.table(**catalog_params,boto3_session=aws_session)
         else:

@@ -58,10 +58,10 @@ def create_session(config, logger: Logger):
     return aws_session
 
 
-def create_database(
+def create_database(aws_session,
     database: str="default"):
     
-    if database not in wr.catalog.databases().values:
-        wr.catalog.create_database(database)
+    if database not in wr.catalog.databases(boto3_session=aws_session).values:
+        wr.catalog.create_database(database,boto3_session=aws_session)
 
 
