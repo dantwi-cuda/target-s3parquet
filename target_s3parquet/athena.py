@@ -31,7 +31,7 @@ def create_session(config, logger: Logger):
     aws_profile = config.get("aws_profile") or os.environ.get("AWS_PROFILE")
     aws_region = config.get("aws_region") or os.environ.get("AWS_REGION")
     #s3_staging_dir = config.get("s3_staging_dir") or os.environ.get("S3_STAGING_DIR")
-    logger.info(f"Using AWS region {aws_region}")
+
     aws_session =""
 
     # AWS credentials based authentication
@@ -54,7 +54,7 @@ def create_session(config, logger: Logger):
             profile_name=aws_profile,
             region_name=aws_region
         )
-    logger.info(aws_session)    
+    logger.info("Ussing the follwoing Session Information: {aws_session}")    
     return aws_session
 
 

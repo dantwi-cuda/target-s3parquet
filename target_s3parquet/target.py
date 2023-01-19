@@ -33,6 +33,7 @@ class Targets3parquet(Target):
         th.Property(
             "aws_secret_access_key",
             th.StringType,
+            secret=True,
             description="AWS Secret access key"
         ),
         th.Property(
@@ -46,7 +47,7 @@ class Targets3parquet(Target):
         th.Property(
             "stringify_schema",
             th.StringType,
-            secret=True,  # Flag config as protected.
+            secret=False,  # Flag config as protected.
             description="If True all data types will be converted to string"
         ),
         th.Property(

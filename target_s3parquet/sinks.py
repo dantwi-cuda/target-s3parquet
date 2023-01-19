@@ -42,7 +42,6 @@ class s3parquetSink(BatchSink):
         self._athena_session = ""
         self._glue_schema = self._get_glue_schema()
         #ddl = generate_create_database_ddl(self.config["athena_database"])
-        self.logger.warn(f"About to Create Database if it does not exist")
         
         #athena.execute_sql(ddl, self.athena_client)
  
@@ -61,7 +60,6 @@ class s3parquetSink(BatchSink):
     def _get_glue_schema(self):
         aws_session=create_session(self.config, self.logger)
 
-        self.logger.warn(f"I am inside glue schema")
         catalog_params = {
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
@@ -104,7 +102,7 @@ class s3parquetSink(BatchSink):
 
         df = DataFrame(context["records"])
         Partition_Cols=[]
-        df["_sdc_started_at"] = STARTED_AT.timestamp()
+        df["_sdc_started_at"] = STARTED_AT.date()
         validate_partions= self.validateJSON(self.config.get("partition_info"))
         if validate_partions:
             Json_Partions=json.loads(self.config.get("partition_info"))
@@ -112,7 +110,7 @@ class s3parquetSink(BatchSink):
             if partition_Data is not None:
                 if 'column_1_Interval' in partition_Data and partition_Data['column_1_Interval']!="":
                     if partition_Data['column_1_Interval'].lower()=="daily":
-                        df["_sdc_"+partition_Data["Partition_Column_1"]+"_date_"]=df[partition_Data["Partition_Column_1"]].dt.date
+                        df["_sdc_"+partition_Data["Partition_Column_1"]+"_date_"]=df[partition_Data["Partition_Column_1"]].dt.date()
                         Partition_Cols.append(Partition_Cols="_sdc_"+partition_Data["Partition_Column_1"]+"_date_")
                     if partition_Data['column_1_Interval'].lower()=="monthly":
                         df["_sdc_"+partition_Data["Partition_Column_1"]+"_month_"]=df[partition_Data["Partition_Column_1"]].dt.month
@@ -139,7 +137,8 @@ class s3parquetSink(BatchSink):
                     partition_columnName=partition_Data['Partition_Column_2']
                     if partition_columnName!="": Partition_Cols.append(partition_columnName)
 
-
+        else:
+            Partition_Cols.append    ="_sdc_started_at"
 
 
 
@@ -166,7 +165,7 @@ class s3parquetSink(BatchSink):
             stream=self.stream_name,
         )
         aws_session=create_session(self.config, self.logger)
-        self.logger.warn(f"Calling To Parquet Function. Let's See if it's tricky")
+        
         wr.s3.to_parquet(
             df=df,
             index=False,
