@@ -137,9 +137,7 @@ class s3parquetSink(BatchSink):
                     partition_columnName=partition_Data['Partition_Column_2']
                     if partition_columnName!="": Partition_Cols.append(partition_columnName)
 
-        else:
-            Partition_Cols.append("_sdc_started_at")
-
+        
 
 
         current_schema = generate_current_target_schema(self._get_glue_schema())
