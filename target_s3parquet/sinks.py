@@ -138,7 +138,7 @@ class s3parquetSink(BatchSink):
                     if partition_columnName!="": Partition_Cols.append(partition_columnName)
 
         else:
-            Partition_Cols.append    ="_sdc_started_at"
+            Partition_Cols.append("_sdc_started_at")
 
 
 
