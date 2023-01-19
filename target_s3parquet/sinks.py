@@ -121,7 +121,7 @@ class s3parquetSink(BatchSink):
         # client.upload(context["file_path"])  # Upload file
         # Path(context["file_path"]).unlink()  # Delete local copy
 
-        df = df.DataFrame(context["records"])
+        df = pd.DataFrame(context["records"])
         Partition_Cols=[]
         df["_sdc_started_at"] = STARTED_AT.timestamp()
         validate_partions= self.validateJSON(self.config.get("partition_info"))
