@@ -197,6 +197,7 @@ class s3parquetSink(BatchSink):
             mode="append",
             partition_cols=Partition_Cols,
             schema_evolution=True,
+            boto3_session=aws_session,
             dtype=dtype,
         )
 

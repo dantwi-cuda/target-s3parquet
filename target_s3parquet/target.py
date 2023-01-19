@@ -82,6 +82,5 @@ class Targets3parquet(Target):
 
     default_sink_class = s3parquetSink
 
+cli=Targets3parquet.cli
 
-if __name__ == "__main__":
-    Targets3parquet.cli()
