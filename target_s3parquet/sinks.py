@@ -1,7 +1,7 @@
 """s3parquet target sink class, which handles writing streams."""
 from typing import Dict, List, Optional
 import awswrangler as wr
-import pandas as pd
+from pandas import DataFrame
 from singer_sdk import PluginBase
 from singer_sdk.sinks import BatchSink
 import json
@@ -12,7 +12,6 @@ from target_s3parquet.athena import (
 from target_s3parquet.data_type_generator import (
     generate_tap_schema,
     generate_current_target_schema,
-    generate_create_database_ddl,
 )
 from target_s3parquet.sanitizer import (
     get_specific_type_attributes,
@@ -69,7 +68,7 @@ class s3parquetSink(BatchSink):
         if wr.catalog.does_table_exist(**catalog_params,boto3_session=aws_session):
             return wr.catalog.table(**catalog_params,boto3_session=aws_session)
         else:
-            return pd.DataFrame()
+            return DataFrame()
 
 
     max_size = 10000  # Max records to write in one batch
@@ -121,7 +120,7 @@ class s3parquetSink(BatchSink):
         # client.upload(context["file_path"])  # Upload file
         # Path(context["file_path"]).unlink()  # Delete local copy
 
-        df = pd.DataFrame(context["records"])
+        df = DataFrame(context["records"])
         Partition_Cols=[]
         df["_sdc_started_at"] = STARTED_AT.timestamp()
         validate_partions= self.validateJSON(self.config.get("partition_info"))
