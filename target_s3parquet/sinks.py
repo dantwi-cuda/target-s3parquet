@@ -75,6 +75,8 @@ class s3parquetSink(BatchSink):
 
 
     def validateJSON(self,jsonData: str=""):
+        if jsonData==None or jsonData=="":
+            return False
         try:
             json.loads(jsonData)
         except ValueError as err:
