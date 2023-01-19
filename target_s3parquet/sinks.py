@@ -65,8 +65,8 @@ class s3parquetSink(BatchSink):
             "table": self._clean_table_name(self.stream_name),
         }
 
-        if wr.catalog.does_table_exist(**catalog_params):
-            return wr.catalog.table(**catalog_params)
+        if wr.catalog.does_table_exist(**catalog_params,boto3_session=aws_session):
+            return wr.catalog.table(**catalog_params,boto3_session=aws_session)
         else:
             return pd.DataFrame()
 
