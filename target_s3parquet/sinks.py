@@ -74,14 +74,14 @@ class s3parquetSink(BatchSink):
 
 
 
-    def validateJSON(jsonData):
+    def validateJSON(self,jsonData):
         try:
             json.loads(jsonData)
         except ValueError as err:
             return False
         return True
 
-    def searchStream_Partition_Info(stream_Name,jsonData):
+    def searchStream_Partition_Info(self,stream_Name,jsonData):
         for attrib in jsonData:
             if attrib['stream_name']==stream_Name:
                 return attrib
