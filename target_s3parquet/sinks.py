@@ -42,7 +42,7 @@ class s3parquetSink(BatchSink):
         self._glue_schema = self._get_glue_schema()
         #ddl = generate_create_database_ddl(self.config["athena_database"])
         self.logger.warn(f"About to Create Database if it does not exist")
-        create_database(self.config["athena_database"]);
+        
         #athena.execute_sql(ddl, self.athena_client)
  
 
@@ -59,12 +59,13 @@ class s3parquetSink(BatchSink):
     
     def _get_glue_schema(self):
         aws_session=create_session(self.config, self.logger)
+
         self.logger.warn(f"I am inside glue schema")
         catalog_params = {
             "database": self.config.get("athena_database"),
             "table": self._clean_table_name(self.stream_name),
         }
-
+        create_database(self.config["athena_database"]);
         if wr.catalog.does_table_exist(**catalog_params,boto3_session=aws_session):
             return wr.catalog.table(**catalog_params,boto3_session=aws_session)
         else:
