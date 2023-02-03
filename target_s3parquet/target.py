@@ -29,7 +29,7 @@ class Targets3parquet(Target):
             th.StringType,
             default="append",
             description="How data is written to S3 (Append or Overwrite)"
-        )
+        ),
         th.Property(
             "aws_region",
             th.StringType,
