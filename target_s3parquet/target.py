@@ -25,6 +25,12 @@ class Targets3parquet(Target):
         description=""
         ),
         th.Property(
+            "writemode",
+            th.StringType,
+            default="append",
+            description="How data is written to S3 (Append or Overwrite)"
+        )
+        th.Property(
             "aws_region",
             th.StringType,
             secret=False,  # Flag config as protected.

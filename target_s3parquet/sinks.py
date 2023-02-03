@@ -172,7 +172,7 @@ class s3parquetSink(BatchSink):
             path=full_path,
             database=self.config.get("athena_database"),
             table=self.stream_name,
-            mode="append",
+            mode=self.config.get("writemode"),
             partition_cols=Partition_Cols,
             schema_evolution=True,
             boto3_session=aws_session,
